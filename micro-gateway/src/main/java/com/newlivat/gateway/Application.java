@@ -18,8 +18,9 @@ public class Application {
 	private static ClassPathXmlApplicationContext applicationContext = null;
 
 	public static void main(String[] args) {
-		//applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-		//Gateway gateway = applicationContext.getBean(Gateway.class);
+		// applicationContext = new
+		// ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+		// Gateway gateway = applicationContext.getBean(Gateway.class);
 
 		ClusterManager mgr = new ZookeeperClusterManager();
 		VertxOptions options = new VertxOptions().setClusterManager(mgr);

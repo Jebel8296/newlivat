@@ -13,6 +13,7 @@ import com.newlivat.common.constant.ConsumerAddress;
 import com.newlivat.common.rest.BaseRest;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 
 /**
  * 分享Rest
@@ -29,7 +30,8 @@ public class ShareRest extends BaseRest {
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public void health(@Suspended final AsyncResponse asyncResponse, @Context Vertx vertx) {
-		send(vertx, ConsumerAddress.HEALTH_SHARE, null, options, asyncResponse);
+		JsonObject message = parseMessage(ConsumerAddress.HEALTH_SHARE, null);
+		send(vertx, ConsumerAddress.CIRCUIT_BREAKER_SHARE, message, options, asyncResponse);
 	}
 
 }
