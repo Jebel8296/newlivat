@@ -41,6 +41,12 @@ public class ReplyData {
 		this.result = result;
 	}
 
+	public ReplyData(int code, String msg) {
+		super();
+		this.code = code;
+		this.msg = msg;
+	}
+
 	public int getCode() {
 		return code;
 	}

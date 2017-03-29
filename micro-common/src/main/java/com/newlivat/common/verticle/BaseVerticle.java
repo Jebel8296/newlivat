@@ -5,42 +5,34 @@ import java.util.Set;
 
 import javax.ws.rs.core.Response;
 
-import org.apache.curator.framework.CuratorFramework;
 import org.apache.log4j.Logger;
 
 import com.newlivat.common.response.ReplyData;
 
-import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.CorsHandler;
-import io.vertx.redis.RedisClient;
 
 public abstract class BaseVerticle extends AbstractVerticle {
 
 	protected Logger log = Logger.getLogger(getClass());
-	protected CircuitBreaker breaker;
-	protected CuratorFramework curator;
-	protected RedisClient redis;
 	protected JWTAuth jwt;
-	protected EventBus eb;
 
 	@Override
 	public void start() throws Exception {
 		super.start();
-		eb = vertx.eventBus();
 		/**
-		jwt = JWTAuth.create(vertx, new JsonObject().put("keyStore",
-				new JsonObject().put("path", "keystore.jceks").put("password", "secret")));
-				*/
+		 * jwt = JWTAuth.create(vertx, new JsonObject().put("keyStore", new
+		 * JsonObject().put("path", "keystore.jceks").put("password",
+		 * "secret")));
+		 */
 	}
 
 	protected void enableCorsSupport(Router router) {
@@ -56,8 +48,16 @@ public abstract class BaseVerticle extends AbstractVerticle {
 		router.route().handler(CorsHandler.create("*").allowedHeaders(allowHeaders).allowedMethods(allowMethods));
 	}
 
+	protected void LogInfoForServiceParam(String address, Object message) {
+		log.info("<<" + address + ">> param ：" + message);
+	}
+
+	protected void LogInfoForServiceReply(String address, Object message) {
+		log.info("<<" + address + ">> reply ：" + message);
+	}
+
 	protected void checkHealth(String address) {
-		eb.consumer(address, message -> {
+		vertx.eventBus().consumer(address, message -> {
 			message.reply(new JsonObject().put("status", "UP"));
 		});
 	}

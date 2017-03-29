@@ -19,13 +19,19 @@ public abstract class BaseRest {
 			AsyncResponse asyncResponse) {
 		vertx.eventBus().send(address, message, options, msg -> {
 			if (msg.succeeded()) {
-				JsonObject result = (JsonObject) msg.result().body();
-				ResponseBuilder builder = Response.ok(result.encode());
+				ResponseBuilder builder = Response.ok(msg.result().body());
 				asyncResponse.resume(builder.build());
 			} else {
 				asyncResponse.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 			}
 		});
+	}
+
+	protected JsonObject parseMessage(String address, JsonObject param) {
+		JsonObject request = new JsonObject();
+		request.put("address", address);
+		request.put("param", param != null ? param : new JsonObject());
+		return request;
 	}
 
 }
