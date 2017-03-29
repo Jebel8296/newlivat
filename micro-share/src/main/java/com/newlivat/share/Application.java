@@ -18,8 +18,10 @@ public class Application {
 	private static ClassPathXmlApplicationContext applicationContext = null;
 
 	public static void main(String[] args) {
-		//applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-		//ShareVerticle share = applicationContext.getBean(ShareVerticle.class);
+		// applicationContext = new
+		// ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+		// ShareVerticle share =
+		// applicationContext.getBean(ShareVerticle.class);
 
 		ClusterManager mgr = new ZookeeperClusterManager();
 		VertxOptions options = new VertxOptions().setClusterManager(mgr);

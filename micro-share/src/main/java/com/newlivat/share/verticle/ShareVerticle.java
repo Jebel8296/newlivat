@@ -9,7 +9,8 @@ public class ShareVerticle extends BaseVerticle {
 	@Override
 	public void start() throws Exception {
 		super.start();
-		eb.consumer(ConsumerAddress.HEALTH_SHARE, message -> {
+		vertx.eventBus().consumer(ConsumerAddress.HEALTH_SHARE, message -> {
+			LogInfoForServiceParam(ConsumerAddress.HEALTH_SHARE, message.body());
 			message.reply(NewLivatConstant.UP);
 		});
 
